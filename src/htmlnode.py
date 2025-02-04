@@ -33,22 +33,37 @@ class LeafNode(HTMLNode):
             raise ValueError
         if not self.tag:
             return str(self.value)
+
+        # regular text doesn't have a tag
+        if not self.tag:
+            return self.value
         return f"<{self.tag}{self.properties_to_html()}>{self.value}</{self.tag}>"
 
 
 class ParentNode(HTMLNode):
-    def __init__(self, tag, children, properties=None):
-        super().__init__(tag, None, children, properties)
+    def __init__(self, tag, children=None, properties=None):
+        super().__init__(tag, None, [], properties)
 
     def to_html(self):
         if not self.tag:
             raise ValueError
         if not self.children:
             raise ValueError("parent node has children missing")
-        return f"<{self.tag}{self.properties_to_html()}>{''.join([child.to_html() for child in self.children])}</{self.tag}>"
+        children_html = ""
+        for child in self.children:
+            if isinstance(child, list):
+                for grand_child in child:
+                    children_html += grand_child.to_html()
+            else:
+                children_html += child.to_html()
+
+        return f"\n<{self.tag}{self.properties_to_html()}>{children_html}</{self.tag}>"
     
     def add_child(self, child):
         self.children.append(child)
+    
+    def add_children(self, children):
+        self.children.extend(children)
 
 
 def text_node_to_html_node(text_node):
