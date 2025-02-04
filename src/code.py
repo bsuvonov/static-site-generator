@@ -147,3 +147,4 @@ def text_to_textnodes(text):
     for delimiter in delimiters:
         nodes = split_nodes_delimiter(nodes, delimiter)
     return nodes
+

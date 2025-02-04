@@ -8,7 +8,7 @@ class TestMarkdownToTextNodes(unittest.TestCase):
 
     def test_text_to_textnodes(self):
         # Test case 1: Normal case with bold, italic, code, image, and link
-        text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://example.com)"
         expected_output = [
             TextNode("This is ", TextType.TEXT),
             TextNode("text", TextType.BOLD),
@@ -19,7 +19,7 @@ class TestMarkdownToTextNodes(unittest.TestCase):
             TextNode(" and an ", TextType.TEXT),
             TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
             TextNode(" and a ", TextType.TEXT),
-            TextNode("link", TextType.LINK, "https://boot.dev")
+            TextNode("link", TextType.LINK, "https://example.com")
         ]
         self.assertEqual(text_to_textnodes(text), expected_output)
 

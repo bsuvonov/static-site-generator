@@ -46,6 +46,9 @@ class ParentNode(HTMLNode):
         if not self.children:
             raise ValueError("parent node has children missing")
         return f"<{self.tag}{self.properties_to_html()}>{''.join([child.to_html() for child in self.children])}</{self.tag}>"
+    
+    def add_child(self, child):
+        self.children.append(child)
 
 
 def text_node_to_html_node(text_node):

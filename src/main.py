@@ -1,11 +1,11 @@
 from src.textnode import *
 from src.htmlnode import *
 from src.code import *
+from src.parse_md import *
 
 
 def main():
-
-    nodes = text_to_textnodes("[ ](https://example.com)")
+    process_markdown()
     return 0
 
 

@@ -26,8 +26,8 @@ class TestMarkdownExtract(unittest.TestCase):
 
     def test_extract_markdown_links(self):
         # Test case 1: Normal case with multiple links
-        text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
-        self.assertEqual(extract_markdown_links(text), [("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")])
+        text = "This is text with a link [to example.com](https://www.example.com) and [to youtube](https://www.youtube.com/@exampledotcom)"
+        self.assertEqual(extract_markdown_links(text), [("to example.com", "https://www.example.com"), ("to youtube", "https://www.youtube.com/@exampledotcom")])
 
         # Test case 2: No links in the text
         text = "This is text with no links"
