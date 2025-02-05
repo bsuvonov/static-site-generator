@@ -18,6 +18,9 @@ class HTMLNode:
             [key + '="' + value + '"' for key, value in self.properties.items()]
         )
 
+    def set_properties(self, properties):
+        self.properties = properties
+
     def __repr__(self):
         return f'HTMLNode(tag="{self.tag}", value="{self.value}", children={self.children}, properties={self.properties})'
 
@@ -29,7 +32,7 @@ class LeafNode(HTMLNode):
     def to_html(self):
         if self.tag == "img":
             return f"<img{self.properties_to_html()}>"
-        if not self.value:
+        if self.value is None:
             raise ValueError
         if not self.tag:
             return str(self.value)
@@ -42,7 +45,9 @@ class LeafNode(HTMLNode):
 
 class ParentNode(HTMLNode):
     def __init__(self, tag, children=None, properties=None):
-        super().__init__(tag, None, [], properties)
+        if not children:
+            children = []
+        super().__init__(tag, None, children, properties)
 
     def to_html(self):
         if not self.tag:
@@ -64,6 +69,9 @@ class ParentNode(HTMLNode):
     
     def add_children(self, children):
         self.children.extend(children)
+    
+    def has_children(self):
+        return len(self.children)
 
 
 def text_node_to_html_node(text_node):

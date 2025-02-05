@@ -134,12 +134,15 @@ def split_nodes_link(old_nodes):
     return new_nodes
 
 
-def text_to_textnodes(text):
+def text_to_textnodes(text, type=None):    # `type` is used by CODE block only in markdown_block_to_html_nodes()
     if text == "":
         return []
 
     delimiters = ["**", "*", "`"]
-    nodes = [TextNode(text, TextType.TEXT)]
+    if type:
+        nodes = [TextNode(text, type)]
+    else:
+        nodes = [TextNode(text, TextType.TEXT)]
 
     nodes = split_nodes_image(nodes)
     nodes = split_nodes_link(nodes)
@@ -148,3 +151,7 @@ def text_to_textnodes(text):
         nodes = split_nodes_delimiter(nodes, delimiter)
     return nodes
 
+
+# REQ: `code_block` is collection of lines representing code block
+def code_to_textnodes(code_block):
+    return [TextNode(line+'\n', TextType.TEXT) for line in code_block]

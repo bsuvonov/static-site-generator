@@ -1,7 +1,9 @@
 from enum import Enum
 import os
+import re
 from src.htmlnode import *
 from src.code import *
+from src.blocks_to_html_nodes import markdown_block_to_html_nodes
 
 class BlockType(Enum):
     HEADING = "BlockType.HEADING"
@@ -29,7 +31,7 @@ class MarkdownBlock:
 
 def identify_block_type(line):
 
-    line = line.strip()
+    line = line.lstrip()
     if line == "":      # This condition is true only when the function is called by the while loop condition of code_block_helper, so it's fine to return PARAGRAPH
         return BlockType.PARAGRAPH
 
@@ -43,7 +45,7 @@ def identify_block_type(line):
         return BlockType.ORDERED_LIST
     elif line.startswith("```") or line.startswith("~~~"):
         return BlockType.CODE
-    elif line.startswith("> "):
+    elif line.startswith(">"):
         return BlockType.QUOTE
     else:
         return BlockType.PARAGRAPH
@@ -71,12 +73,12 @@ def paragraph_block_helper(lines, index):
 def header_block_helper(lines, index):
     content = []
     content.append(lines[index])
+    index += 1
     return MarkdownBlock(BlockType.HEADING, content), index
 
 
 def code_block_helper(lines, index):
-    content = []
-    content.append(lines[index])
+    content = [lines[index]]
     index += 1
     while (
         index < len(lines)
@@ -85,7 +87,7 @@ def code_block_helper(lines, index):
         content.append(lines[index])
         index += 1
     
-    return MarkdownBlock(BlockType.CODE, content), index
+    return MarkdownBlock(BlockType.CODE, content), index+1  # exclude the ending ```
 
 
 
@@ -108,36 +110,48 @@ def quote_block_helper(lines, index):
 
 
 def list_block_helper(lines, index, spaces, n_of_spaces, block_type):
+    print("inside block_helper()", lines[index])
+
     content = []
     content.append(lines[index])
+    old_index = index
     index += 1
+    print("inside block_helper()", lines[index] + spaces + str(n_of_spaces))
+
+
     while (
         index < len(lines)
         and (lines[index].startswith(spaces*n_of_spaces)     # we should not jump to parent section when child section ends
-        and (identify_block_type(lines[index]) == block_type
-             or lines[index].startswith(spaces*(n_of_spaces+1)))
-             or lines[index] == "")
+        and (identify_block_type(lines[index]) == block_type or lines[index].startswith(spaces*(n_of_spaces+1)))
+        or lines[index] == "")
     ):
-
-        if lines[index].startswith(spaces*(n_of_spaces)+2*SPACE):
-            # identify how many space character is one tab
+        print("inside while:",lines[index], block_type)
+        if lines[index] == "":      # if line is empty
+            index+=1
+        elif lines[index].startswith(spaces*(n_of_spaces)+2*SPACE):     # if line is the beginning of subsection
+            print("passing to child:", lines[index])
+            # identify how many space characters make up one tab
             if n_of_spaces == 0:
                 spaces = SPACE*(len(lines[index])-len(lines[index].lstrip()))
                 child_block, index = retrieve_block(lines, index, spaces, 1)
             else:
                 child_block, index = retrieve_block(lines, index, spaces, n_of_spaces+1)
+            #print("child returned, next line:", lines[index])
             content.append(child_block)
 
-        else:
+        else:       # if line is a list item
             content.append(lines[index])
-        index += 1
-    
-    return MarkdownBlock(block_type, content), index-1
+            index += 1
+#        index += 1
+
+    return MarkdownBlock(block_type, content), index
 
 
 
 
 def retrieve_block(lines, index, spaces, n_of_spaces):
+
+    print("inside retrieve:", lines[index])
     
     # if there is too much indentation, line is considered as paragraph
     if lines[index].startswith(spaces*(n_of_spaces+2)):
@@ -184,8 +198,9 @@ def split_blocks(markdown):
             index += 1
             continue
         block, index = retrieve_block(lines, index, SPACE*2, 0)
+        
 
-        index += 1
+#        index += 1
         blocks.append(block)
 
     return blocks                
@@ -194,13 +209,14 @@ def split_blocks(markdown):
 
 def process_markdown():
 
-    md = open("./mds/header_and_paragraph.md", "r")
+    md = open("./mds/penguins.md", "r")
     md_content = md.read()
     md.close()
 
     blocks = split_blocks(md_content)
 
-
+    for block in blocks:
+        print(block)
 
     markdown_to_html_node(blocks)
 
@@ -217,51 +233,6 @@ def process_markdown():
 
 
 
-def markdown_block_to_html_nodes(block, root):
-
-    nodes = []
-
-    match block.type:
-        case BlockType.PARAGRAPH:
-            for line in block.content:
-                parent_node = ParentNode('p')
-                text_nodes = text_to_textnodes(line)
-                child_nodes = [text_node_to_html_node(text_node) for text_node in text_nodes]
-
-                parent_node.add_children(child_nodes)
-                nodes.append(parent_node)
-        
-        case BlockType.HEADING:
-            line = block.content[0].strip()
-            cnt = 0
-            for char in line:
-                if char == '#':
-                    cnt+=1
-                else:
-                    break
-            if cnt == 0:
-                raise Exception("Invalid header text passed, no '#' available in the text")
-
-            # remove '#' from the line
-            line = line[cnt:].strip()
-
-            parent_node = ParentNode(f"h{cnt}")
-            text_nodes = text_to_textnodes(line)
-            child_nodes = [text_node_to_html_node(text_node) for text_node in text_nodes]
-
-            parent_node.add_children(child_nodes)
-
-            nodes.append(parent_node)
-        
-        case BlockType.UNORDERED_LIST:
-            for line in block.content:
-        
-    return nodes
-
-
-
-
-
 
 
 
@@ -270,15 +241,13 @@ def markdown_block_to_html_nodes(block, root):
 
 def markdown_to_html_node(blocks):
 
-    for block in blocks:
-        print(block)
 
     root = ParentNode("div")
 
 
     for block in blocks:
-        node = markdown_block_to_html_nodes(block, root)
-        root.add_children(node)
+        node = markdown_block_to_html_nodes(block)
+        root.add_child(node)
 
         
     print(root.to_html())
