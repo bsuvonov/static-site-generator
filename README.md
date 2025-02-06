@@ -1,6 +1,6 @@
 # Static Site Generator
 
-This tool allows you to easily convert your Markdown documents into HTML files, ideal for blogging and creating websites with minimal effort. This tool is perfect for if you prefer writing in Markdown rather than dealing with lengthy HTML blocks.
+This tool allows you to easily convert your Markdown documents into HTML files, ideal for blogging and creating websites with minimal effort.
 
 ## Features
 
