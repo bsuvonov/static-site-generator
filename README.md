@@ -1,5 +1,7 @@
 # Static Site Generator
 
+![demo](https://raw.githubusercontent.com/wiki/bsuvonov/static-site-generator/images/demo.png)
+
 This tool allows you to easily convert your Markdown documents into HTML files, ideal for blogging and creating websites with minimal effort.
 
 ## Features
