@@ -93,13 +93,25 @@ def process_code(block):
 
 def process_quote(block):
     parent_node = ParentNode("blockquote")
+
+    for i in range(len(block.content)):
+        block.content[i] = block.content[i].strip()[1:].lstrip()
+    
+    line = "<br>".join(block.content)
+    text_nodes = text_to_text_nodes(line)
+    child_nodes = [text_node_to_html_node(text_node) for text_node in text_nodes]
+    parent_node.add_children(child_nodes)
+
+    """
     for line in block.content:
         line = line.strip()[
             1:
-        ].lstrip()  # remove `>` in the beginning and add '\n' at the end
+        ].lstrip()      # remove `>` in the beginning and add '\n' at the end
         text_nodes = text_to_text_nodes(line)
         child_nodes = [text_node_to_html_node(text_node) for text_node in text_nodes]
+        child_nodes[0].value = '\n' + child_nodes[0].value
         parent_node.add_children(child_nodes)
+    """
     return parent_node
 
 
@@ -128,6 +140,7 @@ def md_to_html_node(blocks):
     root = ParentNode("div")
 
     for block in blocks:
+        print(block)
         node = md_block_to_html_nodes(block)
         root.add_child(node)
 
