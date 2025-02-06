@@ -6,7 +6,7 @@ This tool allows you to easily convert your Markdown documents into HTML files, 
 
 - **Markdown to HTML Conversion**: Write your blog posts or documents in Markdown and convert them to HTML automatically.
 - **Custom CSS Support**: Apply your own custom stylesheets to the generated HTML files for a personalized look.
-- **Static File Support**: Include images and other necessary files for your site by placing them in the `static` folder, which will be copied over to the `public` folder.
+- **Static File Support**: Include images and other necessary files for your page.
 
 ## Project Structure
 - **src/**: Contains source code
