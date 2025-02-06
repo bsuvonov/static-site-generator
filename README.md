@@ -27,4 +27,6 @@ This tool allows you to easily convert your Markdown documents into HTML files, 
    ```bash
    ./main.sh
    ```   
-   
+
+## Contribute
+If you found any bug, implemented a new feature or would like to request a new feature, feel free to open a pull request or issue in this repo.
