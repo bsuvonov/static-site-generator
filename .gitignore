@@ -3,3 +3,4 @@ mds/
 _resources/
 tempCodeRunnerFile.py
 ./public/
+*.html
