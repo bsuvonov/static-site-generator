@@ -17,7 +17,6 @@ def recursive_delete(src):
             os.rmdir(target)
 
 
-
 def recursive_copy(src, dest):
     content = os.listdir(src)
     for item in content:
@@ -29,7 +28,6 @@ def recursive_copy(src, dest):
         else:
             os.mkdir(dest_item)
             recursive_copy(src_item, dest_item)
-
 
 
 # prepares new `public` folder for output
@@ -50,14 +48,12 @@ def prepare_public():
         raise Exception("Folder `static` doesn't exist")
 
 
-
-
 def extract_title(markdown):
     lines = markdown.split("\n")
     for line in lines:
         if line.lstrip().startswith("# "):
             return line.strip()[2:]
-    
+
     raise Exception("Markdown has no title (no `h1` header found)")
 
 
@@ -68,8 +64,6 @@ def write_page(dest, template, title, html):
         elif r"{{ Content }}":
             line = line.replace(r"{{ Content }}", html)
         dest.write(line)
-
-
 
 
 def generate_page(src_path, dest_path, template_path):
@@ -99,12 +93,11 @@ def generate_pages_recursive(src_path, dest_path, template_path):
         dest_item = os.path.join(dest_path, item)
 
         if os.path.isfile(src_item) and src_item[-3:] == ".md":
-            generate_page(src_item, dest_item[:-3]+".html", template_path)
+            generate_page(src_item, dest_item[:-3] + ".html", template_path)
         else:
             if not os.path.exists(dest_item):
                 os.mkdir(dest_item)
             generate_pages_recursive(src_item, dest_item, template_path)
-
 
 
 def main():

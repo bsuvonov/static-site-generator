@@ -134,7 +134,9 @@ def split_nodes_link(old_nodes):
     return new_nodes
 
 
-def text_to_text_nodes(text, type=None):    # `type` is used by CODE block only in markdown_block_to_html_nodes()
+def text_to_text_nodes(
+    text, type=None
+):  # `type` is used by CODE block only in markdown_block_to_html_nodes()
     if text == "":
         return []
 
@@ -154,4 +156,4 @@ def text_to_text_nodes(text, type=None):    # `type` is used by CODE block only 
 
 # REQ: `code_block` is collection of lines representing code block
 def code_to_textnodes(code_block):
-    return [TextNode(line+'\n', TextType.TEXT) for line in code_block]
+    return [TextNode(line + "\n", TextType.TEXT) for line in code_block]

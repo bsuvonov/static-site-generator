@@ -6,18 +6,19 @@ import re
 
 
 def process_paragraph(block):
-    parent_node = ParentNode('p')
+    parent_node = ParentNode("p")
     for line in block.content:
         text_nodes = text_to_text_nodes(line)
         child_nodes = [text_node_to_html_node(text_node) for text_node in text_nodes]
         parent_node.add_children(child_nodes)
     return parent_node
 
+
 def process_heading(block):
     line = block.content[0].strip()
     cnt = 0
     for char in line:
-        if char == '#':
+        if char == "#":
             cnt += 1
         else:
             break
@@ -30,6 +31,7 @@ def process_heading(block):
     child_nodes = [text_node_to_html_node(text_node) for text_node in text_nodes]
     parent_node.add_children(child_nodes)
     return parent_node
+
 
 def process_unordered_list(block):
     grand_parent = ParentNode("ul")
@@ -44,10 +46,13 @@ def process_unordered_list(block):
             if text == "":
                 text = SPACE  # empty list item is possible
             text_nodes = text_to_text_nodes(text)
-            child_nodes = [text_node_to_html_node(text_node) for text_node in text_nodes]
+            child_nodes = [
+                text_node_to_html_node(text_node) for text_node in text_nodes
+            ]
             parent_node.add_children(child_nodes)
             grand_parent.add_child(parent_node)
     return grand_parent
+
 
 def process_ordered_list(block):
     grand_parent = ParentNode("ol")
@@ -56,36 +61,42 @@ def process_ordered_list(block):
             child_nodes = md_block_to_html_nodes(elem)
             grand_parent.add_children(child_nodes)
         else:
-            match = re.search(r'\d+\.\s+(.*)', elem.strip())
+            match = re.search(r"\d+\.\s+(.*)", elem.strip())
             text = SPACE  # empty list item is possible
             if match:
                 text = match.group(1)
             parent_node = ParentNode("li")
             text_nodes = text_to_text_nodes(text)
-            child_nodes = [text_node_to_html_node(text_node) for text_node in text_nodes]
+            child_nodes = [
+                text_node_to_html_node(text_node) for text_node in text_nodes
+            ]
             parent_node.add_children(child_nodes)
             grand_parent.add_child(parent_node)
     return grand_parent
+
 
 def process_code(block):
     grand_parent = ParentNode("pre")
     language = None
     parent_node = ParentNode("code")
-    
+
     if len(block.content[0].strip()) > 3:
         language = block.content[0].strip()[3:]
         parent_node.set_properties({"class": f"language-{language}"})
-    
+
     text_nodes = code_to_textnodes(block.content[1:])
     child_nodes = [text_node_to_html_node(text_node) for text_node in text_nodes]
     parent_node.add_children(child_nodes)
     grand_parent.add_child(parent_node)
     return grand_parent
 
+
 def process_quote(block):
     parent_node = ParentNode("blockquote")
     for line in block.content:
-        line = line.strip()[1:].lstrip()  # remove `>` in the beginning and add '\n' at the end
+        line = line.strip()[
+            1:
+        ].lstrip()  # remove `>` in the beginning and add '\n' at the end
         text_nodes = text_to_text_nodes(line)
         child_nodes = [text_node_to_html_node(text_node) for text_node in text_nodes]
         parent_node.add_children(child_nodes)
@@ -112,16 +123,12 @@ def md_block_to_html_nodes(block):
     return nodes
 
 
-
-
 def md_to_html_node(blocks):
 
     root = ParentNode("div")
 
-
     for block in blocks:
         node = md_block_to_html_nodes(block)
         root.add_child(node)
-
 
     return root

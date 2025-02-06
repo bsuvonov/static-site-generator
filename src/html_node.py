@@ -63,13 +63,13 @@ class ParentNode(HTMLNode):
                 children_html += child.to_html()
 
         return f"<{self.tag}{self.properties_to_html()}>{children_html}</{self.tag}>"
-    
+
     def add_child(self, child):
         self.children.append(child)
-    
+
     def add_children(self, children):
         self.children.extend(children)
-    
+
     def has_children(self):
         return len(self.children)
 
