@@ -1,11 +1,11 @@
-from src.textnode import *
-from src.htmlnode import *
-from src.code import *
+from src.text_node import *
+from src.html_node import *
+from src.text_to_text_nodes import *
 from src.parse_md import *
 
 
 def main():
-    process_markdown()
+    md_to_html()
     return 0
 
 

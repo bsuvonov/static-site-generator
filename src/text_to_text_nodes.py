@@ -1,6 +1,6 @@
 import re
-from src.textnode import *
-from src.htmlnode import *
+from src.text_node import *
+from src.html_node import *
 
 
 def split_nodes_delimiter(old_nodes, delimiter):
@@ -134,7 +134,7 @@ def split_nodes_link(old_nodes):
     return new_nodes
 
 
-def text_to_textnodes(text, type=None):    # `type` is used by CODE block only in markdown_block_to_html_nodes()
+def text_to_text_nodes(text, type=None):    # `type` is used by CODE block only in markdown_block_to_html_nodes()
     if text == "":
         return []
 

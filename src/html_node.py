@@ -1,4 +1,4 @@
-from src.textnode import *
+from src.text_node import *
 
 
 class HTMLNode:
@@ -32,7 +32,7 @@ class LeafNode(HTMLNode):
     def to_html(self):
         if self.tag == "img":
             return f"<img{self.properties_to_html()}>"
-        if self.value is None:
+        if self.value is None or self.value == "":
             raise ValueError
         if not self.tag:
             return str(self.value)
@@ -62,7 +62,7 @@ class ParentNode(HTMLNode):
             else:
                 children_html += child.to_html()
 
-        return f"\n<{self.tag}{self.properties_to_html()}>{children_html}</{self.tag}>"
+        return f"<{self.tag}{self.properties_to_html()}>{children_html}</{self.tag}>"
     
     def add_child(self, child):
         self.children.append(child)
