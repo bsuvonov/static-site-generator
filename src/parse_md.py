@@ -178,16 +178,12 @@ def split_blocks(markdown):
 
 
 
-def md_to_html():
+def md_to_html(markdown):
+    md_blocks = split_blocks(markdown)
 
-    md = open("./mds/penguins.md", "r")
-    md_content = md.read()
-    md.close()
+    html_node = md_to_html_node(md_blocks)
 
-    md_blocks = split_blocks(md_content)
-
-
-    html = md_to_html_node(md_blocks)
+    return html_node.to_html()
 
 
 

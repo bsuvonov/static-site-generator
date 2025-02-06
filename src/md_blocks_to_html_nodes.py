@@ -85,7 +85,7 @@ def process_code(block):
 def process_quote(block):
     parent_node = ParentNode("blockquote")
     for line in block.content:
-        line = line.strip()[1:].lstrip() + '\n'  # remove `>` in the beginning and add '\n' at the end
+        line = line.strip()[1:].lstrip()  # remove `>` in the beginning and add '\n' at the end
         text_nodes = text_to_text_nodes(line)
         child_nodes = [text_node_to_html_node(text_node) for text_node in text_nodes]
         parent_node.add_children(child_nodes)
@@ -94,8 +94,6 @@ def process_quote(block):
 
 def md_block_to_html_nodes(block):
     nodes = []
-    print(block.type)
-    print(block.type == BlockType.PARAGRAPH)
 
     match block.type:
         case BlockType.PARAGRAPH:
@@ -125,6 +123,5 @@ def md_to_html_node(blocks):
         node = md_block_to_html_nodes(block)
         root.add_child(node)
 
-    print(root.to_html())
 
     return root
