@@ -4,12 +4,12 @@
 
 # Night City
 
-![penguins](/images/city_2077.gif)
+![night_city](/images/city_2077.gif)
 
 Under the neon glow of a futuristic night city, **towering skyscrapers** and *whirling hovercars* create a mesmerizing landscape. Discover more about this vibrant world [here](https://www.nightcity.com/).
 
 > This is a quote
-> Another line of quote
+> This is another line of quote
 
 ```python
 # This is a code block
