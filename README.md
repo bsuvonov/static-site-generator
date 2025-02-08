@@ -19,7 +19,7 @@ This tool allows you to easily convert your Markdown documents into HTML files, 
 
 1. **Clone the repository**:
    ```bash
-   git https://github.com/bsuvonov/static-site-generator.git
+   git clone https://github.com/bsuvonov/static-site-generator.git
    cd static-site-generator
    ```
 2. **Place your files**
