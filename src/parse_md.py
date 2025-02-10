@@ -15,15 +15,15 @@ def identify_block_type(line):
 
     if line.startswith("#"):
         return BlockType.HEADING
-    elif line.startswith("- ") or line.startswith("* "):
+    if line.startswith("- ") or line.startswith("* "):
         return BlockType.UNORDERED_LIST
-    elif line[0] in "0123456789" and "." in line[0:3]:
+    if line[0] in "0123456789" and "." in line[0:3]:
         return BlockType.ORDERED_LIST
-    elif line.startswith("```") or line.startswith("~~~"):
+    if line.startswith("```") or line.startswith("~~~"):
         return BlockType.CODE
-    elif line.startswith(">"):
+    if line.startswith(">"):
         return BlockType.QUOTE
-    else:
+    se:
         return BlockType.PARAGRAPH
 
 
