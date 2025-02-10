@@ -23,8 +23,7 @@ def identify_block_type(line):
         return BlockType.CODE
     if line.startswith(">"):
         return BlockType.QUOTE
-    se:
-        return BlockType.PARAGRAPH
+    return BlockType.PARAGRAPH
 
 
 def paragraph_block_helper(lines, index):
