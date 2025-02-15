@@ -13,14 +13,19 @@ This tool allows to easily convert Markdown documents into HTML files, ideal for
 ## How to Use
 
 1. **Clone the repository**:
+   
    ```bash
    git clone https://github.com/bsuvonov/static-site-generator.git
    cd static-site-generator
    ```
-2. **Place your files**
+   
+3. **Place your files**
+   
    - Place md files in `content` folder. Each file will be converted to an HTML page.
    - Place styles.css and any other assets in `static` folder (optional). These files will be included in the generated output folder.
-3. **Run the program**
+     
+5. **Run the program**
+
    ```bash
    ./main.sh
    ```   
