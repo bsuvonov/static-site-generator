@@ -8,7 +8,7 @@ This tool allows to easily convert Markdown documents into HTML files, ideal for
 
 - **Markdown to HTML Conversion**: Converts Markdown documents to HTML automatically.
 - **Custom CSS Support**: Supports custom stylesheets to be applied to the generated HTML files for a personalized look.
-- **Static File Support**: Keeps the original linkage between static files and markdown files in the output html files in tact!
+- **Static File Support**: Keeps the original linkage between markdown files and their static assets in the output html files in tact.
 
 ## How to Use
 
